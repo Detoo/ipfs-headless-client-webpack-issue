@@ -1,0 +1,28 @@
+service: ipfs-headless-client-webpack-issue
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  memorySize: 256
+  timeout: 60
+  versionFunctions: false
+  apiGateway:
+    minimumCompressionSize: 1024
+  stage: production
+  region: us-west-2
+  logRetentionInDays: 30
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'npm'
+
+functions:
+  app:
+    handler: build/src/handler.app
+    events:
+      - schedule: rate(1 minute)
